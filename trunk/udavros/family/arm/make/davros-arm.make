@@ -1,6 +1,6 @@
-# davros-dummy.make
+# davros-arm.make
 #
-# (c) 2008 David Haworth
+# Copyright 2008 David Haworth
 #
 # This file is part of davros.
 #
