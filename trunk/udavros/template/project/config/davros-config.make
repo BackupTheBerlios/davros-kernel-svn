@@ -29,6 +29,7 @@ DV_FAMILY ?= arm
 VPATH += src
 
 # Where to put the object files and library files?
+DV_GENDIR = gen
 DV_OBJDIR = obj
 DV_LIBDIR = lib
 DV_BINDIR = bin

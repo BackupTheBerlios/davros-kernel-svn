@@ -24,9 +24,11 @@
 all:	lib bin
 
 clean:
-	-rm $(DV_BINDIR)/davros.elf $(DV_LIBDIR)/*.$(A) $(DV_OBJDIR)/*.$(O) 
+	-rm $(DV_BINDIR)/davros.elf $(DV_LIBDIR)/*.$(A) $(DV_OBJDIR)/*.$(O) $(DV_GENDIR)/*
 
-include $(UDAVROS_BASE)/family/$(DV_FAMILY)/make/davros-$(DV_FAMILY).make
+DV_FAMILYDIR = $(UDAVROS_BASE)/family/$(DV_FAMILY)
+
+include $(DV_FAMILYDIR)/make/davros-$(DV_FAMILY).make
 
 # File suffixes
 O = o
@@ -34,6 +36,7 @@ A = a
 S = s
 
 VPATH += $(UDAVROS_BASE)/src/davros
+VPATH += $(DV_GENDIR)
 
 # Davros kernel object files: miscellaneous
 DV_KERN_OBJS += $(DV_OBJDIR)/startup.$(O)
@@ -80,7 +83,22 @@ DV_KERN_OBJS += $(DV_OBJDIR)/init.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/syscall.$(O)
 DV_KERN_OBJS += $(DV_KERN_OBJS_ARCH)
 
-# Davros userland objects
+# Davros system-call objects (userland)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Unknown.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Exit.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Kill.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Create.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Spawn.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Resume.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Suspend.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Chprio.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Getpid.$(O)
+
+# The source files that go with the system-call object files; they need to be generated.
+DV_SC_SRCS = $(foreach obj,$(DV_SC_OBJS),$(subst $(DV_OBJDIR),$(DV_GENDIR),$(subst .$(O),.$(S),$(obj))))
+
+# Davros userland objects; system calls, plus any other library files
+DV_USR_OBJS += $(DV_SC_OBJS)
 DV_USR_OBJS += $(DV_USR_OBJS_ARCH)
 
 # Davros system objects
@@ -105,7 +123,7 @@ $(DV_BINDIR)/davros.elf:	$(DV_OBJDIR) $(DV_OBJS)
 	$(LD) $(LD_OPT) -o $@ $(DV_OBJS) -L $(DV_LIBDIR) -ldavros -ldvusr -T $(DV_LDSCRIPT)
 
 CC_INC = $(addprefix -I,$(DV_INCDIR))
-CC_INC += -I$(UDAVROS_BASE)/family/$(DV_FAMILY)/include
+CC_INC += -I$(DV_FAMILYDIR)/include
 CC_INC += -I$(UDAVROS_BASE)/include
 
 AS_INC = $(CC_INC)
@@ -116,3 +134,9 @@ $(DV_OBJDIR)/%.o:	%.c
 
 $(DV_OBJDIR)/%.o:	%.s
 	$(AS) $(AS_OPT) $(AS_DEF) $(AS_INC) -o $@ $<
+
+# Rule for generating system-call library functions using a script.
+# Unfortunately, wildcard rules with % don't work with VPATH, so we
+# have to provide rules explicitly to generate the source files.
+$(DV_SC_SRCS):	$(DV_FAMILYDIR)/scripts/mksyscall-$(DV_FAMILY).pl
+	$< $(subst .$(S),,$(subst $(DV_GENDIR)/$(DV_FAMILY)-usr-,,$@)) > $@

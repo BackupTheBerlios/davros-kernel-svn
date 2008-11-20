@@ -38,16 +38,6 @@ DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-settimer.$(O)
 DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-enableint.$(O)
 DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-disableint.$(O)
 
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-unknown.$(O)
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-exit.$(O)
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-kill.$(O)
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-create.$(O)
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-spawn.$(O)
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-resume.$(O)
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-suspend.$(O)
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-chprio.$(O)
-DV_USR_OBJS_ARCH += $(DV_OBJDIR)/arm-usr-getpid.$(O)
-
 DV_TOOLPREFIX = arm-elf-
 
 CC = $(DV_TOOLPATH)/bin/$(DV_TOOLPREFIX)gcc
