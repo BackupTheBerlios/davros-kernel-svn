@@ -1,4 +1,4 @@
-/*	marktime.c - __dv_marktime
+/*	insertd.c - __dv_insertd
  *
  *	Copyright 2008 David Haworth
  *
@@ -18,43 +18,38 @@
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <davros/config.h>
+#include <davros/queue.h>
 #include <davros/constants.h>
-#include <davros/basic-types.h>
-#include <davros/time.h>
-#include <davros/process.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
 /*==============================================================================
- *	__dv_marktime - mark the passage of time
+ *	__dv_insertd - insert an entry into a delta queue
  *==============================================================================
 */
-void __dv_marktime(void)
+__dv_status_t __dv_insertd
+(	__dv_qent_t *item,		/* item to insert */
+	__dv_queue_t *q,		/* list to insert into */
+	__dv_qkey_t key			/* key to use for insertion */
+)
 {
-	__dv_uint32_t now;
-	__dv_uint32_t diff;
+	__dv_qent_t *next;			/* runs through list */
 
-	/* Repeat until a time in the future is discovered
-	*/
-	do {
-		/* Read latest timer value, compute difference, save latest value for next time
-		*/
-		now = __dv_readtimer();
-		diff = __dv_subtimer(now, __dv_last_timer_value);
-		__dv_last_timer_value = now;
+	for ( next = q->head.next;
+		  key > next->key;		/* tail has MAXINT as key */
+		  next = next->next  )
+		key -= next->key;
 
-		/* Add the difference onto the absolute time
-		*/
-		__dv_time += diff;
+	item->next = next;
+	item->prev = next->prev;
+	item->prev->next = item;
+	next->prev = item;
+	item->key  = key;
 
-		/* Inform the sleepers of the passage of time
-		*/
-		diff = __dv_tick(diff);
+	if ( next->next != __DV_NULL )	/* If not inserting at end of list ... */
+		next->key -= key;			/* ... Reduce next item's key */
 
-		/* Try to set an interrupt for the remaining time to next wakeup.
-		 * If that fails (already in the past), go round again
-		*/
-	} while ( __dv_settimer(__dv_last_timer_value, diff) != __DV_OK );
+	return __DV_OK;
 }

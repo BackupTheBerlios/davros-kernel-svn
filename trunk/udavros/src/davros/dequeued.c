@@ -1,4 +1,4 @@
-/*	marktime.c - __dv_marktime
+/*	dequeued.c - __dv_dequeued
  *
  *	Copyright 2008 David Haworth
  *
@@ -18,43 +18,28 @@
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <davros/config.h>
+#include <davros/queue.h>
 #include <davros/constants.h>
-#include <davros/basic-types.h>
-#include <davros/time.h>
-#include <davros/process.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
 /*==============================================================================
- *	__dv_marktime - mark the passage of time
+ *	__dv_dequeued - remove an entry from a delta list (opposite of insertd)
  *==============================================================================
 */
-void __dv_marktime(void)
+__dv_qent_t *__dv_dequeued
+(	__dv_qent_t *qent
+)
 {
-	__dv_uint32_t now;
-	__dv_uint32_t diff;
+	__dv_qent_t *next;
 
-	/* Repeat until a time in the future is discovered
-	*/
-	do {
-		/* Read latest timer value, compute difference, save latest value for next time
-		*/
-		now = __dv_readtimer();
-		diff = __dv_subtimer(now, __dv_last_timer_value);
-		__dv_last_timer_value = now;
+	next = qent->next;
+	__dv_dequeue(qent);
 
-		/* Add the difference onto the absolute time
-		*/
-		__dv_time += diff;
+	if ( next->next != __DV_NULL )	/* If not removing from end of list ... */
+		next->key += qent->key;		/* ... increase  next entry's key */
 
-		/* Inform the sleepers of the passage of time
-		*/
-		diff = __dv_tick(diff);
-
-		/* Try to set an interrupt for the remaining time to next wakeup.
-		 * If that fails (already in the past), go round again
-		*/
-	} while ( __dv_settimer(__dv_last_timer_value, diff) != __DV_OK );
+	return qent;
 }

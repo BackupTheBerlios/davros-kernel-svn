@@ -55,6 +55,8 @@ DV_KERN_OBJS += $(DV_OBJDIR)/deregisterobj.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/dequeue.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/enqueue.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/insert.$(O)
+DV_KERN_OBJS += $(DV_OBJDIR)/insertd.$(O)
+DV_KERN_OBJS += $(DV_OBJDIR)/dequeued.$(O)
 
 DV_KERN_OBJS += $(DV_OBJDIR)/initproc.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/dispatch.$(O)

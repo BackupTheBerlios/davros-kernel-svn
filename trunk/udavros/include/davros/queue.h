@@ -62,8 +62,10 @@ struct __dv_queue_s
 /* Prototypes for queue management functions
 */
 __dv_qent_t *__dv_dequeue(__dv_qent_t *);
+__dv_qent_t *__dv_dequeued(__dv_qent_t *);
 __dv_qent_t *__dv_enqueue(__dv_qent_t *, __dv_queue_t *);
 __dv_status_t __dv_insert(__dv_qent_t *, __dv_queue_t *, __dv_qkey_t);
+__dv_status_t __dv_insertd(__dv_qent_t *, __dv_queue_t *, __dv_qkey_t);
 
 #define __dv_initqueue(q) \
 do {								\
