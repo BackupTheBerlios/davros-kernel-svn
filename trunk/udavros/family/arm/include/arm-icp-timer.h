@@ -83,10 +83,11 @@ extern __dv_arm_timer_t __dv_arm_timer_2;
 
 __dv_status_t __dv_inittimer(void);
 __dv_status_t __dv_settimer(__dv_uint32_t, __dv_uint32_t);
+__dv_status_t __dv_stoptimer(void);
 
 #endif
 
-#if 0
+#if 1
 #define __DV_MAXINTERVAL		0xc0000000
 #define __DV_DEFINTERVAL		0x80000000
 #else

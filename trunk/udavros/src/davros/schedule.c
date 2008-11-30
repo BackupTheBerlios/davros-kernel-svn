@@ -46,6 +46,7 @@ __dv_processstate_t	*__dv_schedule(void)
 
 	if ( (best == __DV_NULL ) ||
 		 ( (__dv_currproc != __DV_NULL) &&
+		   (__dv_currproc->state == __DV_PRCURR) &&
 		   (__dv_currproc->prio >= best->prio) ) )
 	{
 		best = __dv_currproc;

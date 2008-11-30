@@ -35,6 +35,7 @@ DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-dispatch-sec.$(O)
 DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-iomap.$(O)
 DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-inittimer.$(O)
 DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-settimer.$(O)
+DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-stoptimer.$(O)
 DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-enableint.$(O)
 DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/arm-icp-disableint.$(O)
 

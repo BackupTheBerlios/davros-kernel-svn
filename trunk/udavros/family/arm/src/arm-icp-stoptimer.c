@@ -1,4 +1,4 @@
-/*	marktime.c - __dv_marktime
+/*	arm-icp-stoptimer.c - __dv_stoptimer
  *
  *	Copyright 2008 David Haworth
  *
@@ -19,44 +19,25 @@
 */
 #include <davros/config.h>
 #include <davros/constants.h>
-#include <davros/basic-types.h>
-#include <davros/time.h>
-#include <davros/process.h>
+#include <arm-icp-timer.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
 /*==============================================================================
- *	__dv_marktime - mark the passage of time
+ *	__dv_stoptimer - stops the timer, clears and pending interrupt
  *==============================================================================
 */
-void __dv_marktime(void)
+__dv_status_t __dv_stoptimer(void)
 {
-	__dv_uint32_t now;
-	__dv_uint32_t diff;
+	__dv_status_t result = __DV_OK;
 
-	__dv_stoptimer();
+	__dv_arm_timer_1.control = __DV_TCTRL_MODE_RELOAD |
+							   __DV_TCTRL_PRESCALE_1 |
+							   __DV_TCTRL_TIMER_SIZE_32 |
+							   __DV_TCTRL_ONESHOT;
+	__dv_arm_timer_1.int_clear = 0;
 
-	/* Repeat until a time in the future is discovered
-	*/
-	do {
-		/* Read latest timer value, compute difference, save latest value for next time
-		*/
-		now = __dv_readtimer();
-		diff = __dv_subtimer(now, __dv_last_timer_value);
-		__dv_last_timer_value = now;
-
-		/* Add the difference onto the absolute time
-		*/
-		__dv_time += diff;
-
-		/* Inform the sleepers of the passage of time
-		*/
-		diff = __dv_tick(diff);
-
-		/* Try to set an interrupt for the remaining time to next wakeup.
-		 * If that fails (already in the past), go round again
-		*/
-	} while ( __dv_settimer(__dv_last_timer_value, diff) != __DV_OK );
+	return result;
 }

@@ -92,6 +92,7 @@ void __dv_usr_kill(__dv_processstate_t *);
 #define __DV_PRCURR			1
 #define __DV_PRREADY		2
 #define __DV_PRSUSP			3
+#define __DV_PRSLEEP		4
 #define __DV_PRFREE			254
 
 /* Offset of registers member in __dv_processstate_t, for assembler files

@@ -70,6 +70,10 @@ __dv_uint32_t __dv_wraptimer(__dv_uint32_t);
 __dv_status_t __dv_settimer(__dv_uint32_t, __dv_uint32_t);
 #endif
 
+#ifndef __dv_stoptimer
+__dv_status_t __dv_stoptimer(void);
+#endif
+
 #endif
 
 #endif

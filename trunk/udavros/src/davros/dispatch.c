@@ -40,7 +40,7 @@ void __dv_dispatch(__dv_int_t disp_sync)
 {
 	__dv_qent_t *qent = __dv_dequeue(__dv_readyqueue.tail.prev);
 
-	if ( __dv_currproc != __DV_NULL )
+	if ( (__dv_currproc != __DV_NULL) && (__dv_currproc->state == __DV_PRCURR) )
 	{
 		__dv_currproc->state = __DV_PRREADY;
 		__dv_insert(&__dv_currproc->qent, &__dv_readyqueue, __dv_currproc->prio);

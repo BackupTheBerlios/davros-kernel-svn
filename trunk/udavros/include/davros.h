@@ -30,9 +30,11 @@ __DV_IDENT("$Id$")
 #endif
 
 #include <davros/process-config.h>
+#include <davros/basic-types.h>
 
 typedef struct __dv_processstate_s *dv_proc_t;
 typedef struct __dv_processconfig_s dv_process_t;
+typedef __dv_uint32_t dv_uint32_t;
 
 dv_proc_t DvCreate(const dv_process_t *, int);
 dv_proc_t DvSpawn(const dv_process_t *, int);
@@ -42,5 +44,6 @@ int DvChprio(dv_proc_t, int);
 dv_proc_t DvGetpid(void);
 void DvExit(int);
 void DvKill(dv_proc_t);
+void DvSleep(dv_uint32_t);
 
 #endif

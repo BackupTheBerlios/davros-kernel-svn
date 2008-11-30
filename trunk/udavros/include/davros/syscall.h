@@ -38,8 +38,9 @@ __DV_IDENT("$Id$")
 #define __DV_SC_SPAWN		4
 #define __DV_SC_RESUME		5
 #define __DV_SC_SUSPEND		6
-#define __DV_SC_CHPRIO		6
-#define __DV_SC_GETPID		6
+#define __DV_SC_CHPRIO		7
+#define __DV_SC_GETPID		8
+#define __DV_SC_SLEEP		9
 
 /* System-call table.
  * This macro provides the system-call table in syscall.c
@@ -57,7 +58,7 @@ __DV_IDENT("$Id$")
 	(void *)__dv_suspend,			\
 	(void *)__dv_chprio,			\
 	(void *)__dv_getpid,			\
-	(void *)__dv_unknowncall,		\
+	(void *)__dv_sleep,				\
 	(void *)__dv_unknowncall,		\
 	(void *)__dv_unknowncall,		\
 	(void *)__dv_unknowncall,		\

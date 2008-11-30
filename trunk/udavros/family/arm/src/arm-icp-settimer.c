@@ -37,13 +37,13 @@ __dv_status_t __dv_settimer(__dv_uint32_t last, __dv_uint32_t delta)
 	if ( elapsed < delta )
 	{
 		delta -= elapsed;
+		__dv_arm_timer_1.load = delta;
 		__dv_arm_timer_1.control = __DV_TCTRL_ENABLE |
 								   __DV_TCTRL_MODE_RELOAD |
 								   __DV_TCTRL_IE |
 								   __DV_TCTRL_PRESCALE_1 |
 								   __DV_TCTRL_TIMER_SIZE_32 |
 								   __DV_TCTRL_ONESHOT;
-		__dv_arm_timer_1.load = delta;
 		result = __DV_OK;
 	}
 

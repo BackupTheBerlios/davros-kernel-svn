@@ -21,6 +21,7 @@
 #include <davros/basic-types.h>
 #include <davros/syscall.h>
 #include <davros/process.h>
+#include <davros/time.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")

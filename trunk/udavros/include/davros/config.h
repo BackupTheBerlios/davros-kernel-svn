@@ -170,6 +170,38 @@ __DV_IDENT("$Id$")
 #define DV_CFG_USERNULL()	for (;;)
 #endif
 
+/* DV_CFG_MINSLEEP --- minimum number of ticks for a process to sleep
+ *
+ * The minimum number of ticks for which DvSleep will actually put a process to sleep
+ * and set the timer. If the parameter to DvSleep() is less than this value, DvSleep()
+ * returns immediately without doing anything. This is not an error case.
+ *
+ * The default value of 1 is always safe. Setting 0 is not recommended. Raising the
+ * value can bring performance benefits, depending on how fast the timer ticks
+ * relative to the CPU.
+*/
+#ifndef DV_CFG_MINSLEEP
+#define DV_CFG_MINSLEEP		1
+#endif
+
+/* DV_CFG_MAXSLEEP --- maximum number of ticks for a process to sleep
+ *
+ * The maximum number of ticks for which a process can sleep. Attempting to sleep for
+ * longer than this in one step is an error, and DvSleep() return __DV_ERR.
+ * The value should be chosen to avoid the situation where there is a process that has
+ * been asleep for a long time and is about to wake up, and another process decides to
+ * sleep for a long time. The sum of the two times, needed to insert the 2nd process into
+ * the delta list, is bigger than a 32-bit unsigned can hold. Interrupt locking times
+ * need to be taken int account too, because the wakeup of the first process might be
+ * overdue.
+ *
+ * The default value of 2000000000 should be fine in nearly all cases. Even with a
+ * 100 MHz clock this represents 20 seconds.
+*/
+#ifndef DV_CFG_MAXSLEEP
+#define DV_CFG_MAXSLEEP		2000000000
+#endif
+
 /* =================================================================================================
  * Below this point there are no more configuration macros.
  * Most of the rest are (temporary) translations from DV_CFG_ macros to internal __DV_ macros

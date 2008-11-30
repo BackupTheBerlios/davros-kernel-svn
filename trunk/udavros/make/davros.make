@@ -65,6 +65,8 @@ DV_KERN_OBJS += $(DV_OBJDIR)/schedule.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/die.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/unknowncall.$(O)
 
+DV_KERN_OBJS += $(DV_OBJDIR)/sleep.$(O)
+
 DV_KERN_OBJS += $(DV_OBJDIR)/initint.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/unusedint.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/registerint.$(O)
@@ -95,6 +97,7 @@ DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Resume.$(O)
 DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Suspend.$(O)
 DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Chprio.$(O)
 DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Getpid.$(O)
+DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Sleep.$(O)
 
 # The source files that go with the system-call object files; they need to be generated.
 DV_SC_SRCS = $(foreach obj,$(DV_SC_OBJS),$(subst $(DV_OBJDIR),$(DV_GENDIR),$(subst .$(O),.$(S),$(obj))))
