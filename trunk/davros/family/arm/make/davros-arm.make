@@ -19,7 +19,7 @@
 #
 # $Id$
 
-VPATH += $(UDAVROS_BASE)/family/arm/src
+VPATH += $(DAVROS_BASE)/family/arm/src
 
 DV_OBJS_ARCH += $(DV_OBJDIR)/arm-startup.$(O)
 DV_OBJS_ARCH += $(DV_OBJDIR)/arm-cstartup.$(O)

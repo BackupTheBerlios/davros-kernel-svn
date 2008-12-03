@@ -26,7 +26,7 @@ all:	lib bin
 clean:
 	-rm $(DV_BINDIR)/davros.elf $(DV_LIBDIR)/*.$(A) $(DV_OBJDIR)/*.$(O) $(DV_GENDIR)/*
 
-DV_FAMILYDIR = $(UDAVROS_BASE)/family/$(DV_FAMILY)
+DV_FAMILYDIR = $(DAVROS_BASE)/family/$(DV_FAMILY)
 
 include $(DV_FAMILYDIR)/make/davros-$(DV_FAMILY).make
 
@@ -35,8 +35,8 @@ O = o
 A = a
 S = s
 
-VPATH += $(UDAVROS_BASE)/src/davros
-VPATH += $(UDAVROS_BASE)/src/dvlib
+VPATH += $(DAVROS_BASE)/src/davros
+VPATH += $(DAVROS_BASE)/src/dvlib
 VPATH += $(DV_GENDIR)
 
 # Davros kernel object files: miscellaneous
@@ -146,7 +146,7 @@ $(DV_BINDIR)/davros.elf:	$(DV_OBJDIR) $(DV_OBJS)
 
 CC_INC = $(addprefix -I,$(DV_INCDIR))
 CC_INC += -I$(DV_FAMILYDIR)/include
-CC_INC += -I$(UDAVROS_BASE)/include
+CC_INC += -I$(DAVROS_BASE)/include
 
 AS_INC = $(CC_INC)
 AS_DEF = $(CC_DEF)

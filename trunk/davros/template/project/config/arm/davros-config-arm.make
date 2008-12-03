@@ -1,4 +1,4 @@
-# davros-config-arm.make - make configuration for udavros synchronous test
+# davros-config-arm.make - make configuration for davros synchronous test
 #
 # (c) 2008 David Haworth
 #

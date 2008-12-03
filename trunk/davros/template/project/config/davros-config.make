@@ -1,4 +1,4 @@
-# davros-config.make - make configuration for ppc build of udavros
+# davros-config.make - make configuration for ppc build of davros
 #
 # (c) 2008 David Haworth
 #
@@ -20,7 +20,7 @@
 # $Id$
 
 # Where are the davros sources?
-UDAVROS_BASE = /where/is/udavros
+DAVROS_BASE = /where/is/davros
 
 # Which CPU family are we building for, and (optional) which member of the family?
 DV_FAMILY ?= arm

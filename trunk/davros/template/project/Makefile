@@ -20,4 +20,4 @@
 # $Id$
 
 include config/davros-config.make
-include $(UDAVROS_BASE)/make/davros.make
+include $(DAVROS_BASE)/make/davros.make
