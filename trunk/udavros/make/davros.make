@@ -36,6 +36,7 @@ A = a
 S = s
 
 VPATH += $(UDAVROS_BASE)/src/davros
+VPATH += $(UDAVROS_BASE)/src/dvlib
 VPATH += $(DV_GENDIR)
 
 # Davros kernel object files: miscellaneous
@@ -87,6 +88,19 @@ DV_KERN_OBJS += $(DV_OBJDIR)/init.$(O)
 DV_KERN_OBJS += $(DV_OBJDIR)/syscall.$(O)
 DV_KERN_OBJS += $(DV_KERN_OBJS_ARCH)
 
+DVLIB_OBJS += $(DV_OBJDIR)/rb8create.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb8destroy.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb8get.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb8put.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb16create.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb16destroy.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb16get.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb16put.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb32create.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb32destroy.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb32get.$(O)
+DVLIB_OBJS += $(DV_OBJDIR)/rb32put.$(O)
+
 # Davros system-call objects (userland)
 DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Unknown.$(O)
 DV_SC_OBJS += $(DV_OBJDIR)/$(DV_FAMILY)-usr-Exit.$(O)
@@ -109,7 +123,7 @@ DV_USR_OBJS += $(DV_USR_OBJS_ARCH)
 # Davros system objects
 DV_OBJS += $(DV_OBJS_ARCH)
 
-lib:	$(DV_LIBDIR)/libdavros.a $(DV_LIBDIR)/libdvusr.a
+lib:	$(DV_LIBDIR)/libdavros.a $(DV_LIBDIR)/libdvusr.a $(DV_LIBDIR)/libdv.a
 
 bin:	$(DV_BINDIR)/davros.elf
 
@@ -120,6 +134,9 @@ dirs:
 
 $(DV_LIBDIR)/libdavros.a:	$(DV_KERN_OBJS)
 	$(AR) $(AR_OPT) $@ $(DV_KERN_OBJS)
+
+$(DV_LIBDIR)/libdv.a:	$(DVLIB_OBJS)
+	$(AR) $(AR_OPT) $@ $(DVLIB_OBJS)
 
 $(DV_LIBDIR)/libdvusr.a:	$(DV_USR_OBJS)
 	$(AR) $(AR_OPT) $@ $(DV_USR_OBJS)
