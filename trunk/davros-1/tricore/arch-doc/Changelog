@@ -1,0 +1,10 @@
+Changes in version 0.4:
+	Renamed attach_interrupt, detach_interrupt, get_interrupt_handler
+	and get_interrupt_parameter to __davros_attach_interrupt etc.
+	to match the definitions in kernel.h. The type
+	interrupt_handler_t now disappears.
+	Files: 
+		boot/boot-kernel.c
+		arch-h/tricore-core.h
+		tricore/tricore-interrupts.c
+		arch-drv/asc-tty-drv.c

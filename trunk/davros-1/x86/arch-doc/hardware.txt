@@ -1,0 +1,4 @@
+The programs in this archive are intended for use on the
+Intel x86 CPU family. Currently the only supported hardware
+is a 486 ISA-based PC, but other CPUs from 386 upwards
+may or may not work, depending. PCI might be a problem.

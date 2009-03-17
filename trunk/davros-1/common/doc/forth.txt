@@ -1,0 +1,44 @@
+"Quick and Dirty Forth"
+
+This is a little compiler and interpreter for a Forth-like
+language that I wrote in a couple of evenings just to satisfy
+my curiosity. It was first written and debugged under Linux
+and I think the Makefile in the forth/ subdirectory should still
+produce a working program under Linux or just about any other
+Unix-like OS with gcc. However, the intention is for it to
+form the basis of a command interpreter for a little OS kernel
+I'm writing, so as a step in that direction here it is running
+stand-alone on a microcomputer board.
+
+The language that is interpreted is a subset of the Forth that
+was used on a little-known microcomputer called the Jupiter
+Ace back in the '80s. Most of the trickier stuff like compiler
+words and arbitrary dictionary manipulation hasn't been implemented
+yet. Neither is there any floating-point support.
+
+To use the interpreter, you need an idea of what the Forth
+language does. That is beyond the scope of this documentation,
+but basically there is a data stack onto which you can push
+numbers simply by typing them in, separated by white space.
+You can operate on the number on the stack using the built-in
+commands; for example, the command "+" takes 2 numbers off the
+stack, adds them together and pushes the result back on the
+stack. The command "." pops one number off the stack and prints
+it. You can define your own commands using the ":" and ";"
+commands; for example, the sequence ": foo . cr ;" defines
+a command called "foo" that pops a number off the stack and then
+prints it followed by a newline. The command "vlist" lists all the
+available commands; both built-in and user-defined.
+
+There are a few extra commands. "ddump" and "rdump" dump the
+contents of the data and return stacks, respectively. They
+are intended for debugging and they do not alter the stacks in
+any way. If you define the macro DEBUGGING in the file
+forth/Makefile.m at compile time, you should get a load of
+debug messages compiled in. The number of messages actually
+printed depends on the value of a variable that can be
+changed dynamically using the command "dbglvl", which takes
+a number off the stack and puts it into the variable.
+
+David Haworth --- 4th January 2002
+dave@fen-net.de

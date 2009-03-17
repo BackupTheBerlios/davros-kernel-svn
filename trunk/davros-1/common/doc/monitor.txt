@@ -1,0 +1,11 @@
+"ROM Monitor"
+
+The Makefile target "bin/monitor" should build a rudimentary ROM
+monitor. However, I've never even attmpted to locate it in the
+ROM, so I've no idea if it will even run, let alone do anything
+useful. I've started testing it in RAM, so I know that at least it
+gives a prompt, and one or two of the commands appear to work
+too.
+
+David Haworth --- 4th January 2002
+dave@fen-net.de

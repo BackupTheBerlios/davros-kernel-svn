@@ -1,0 +1,20 @@
+To compile the programs, you need to have the GNU CC for Tricore
+installed. All the development work has been carried out on
+a Linux host, but should also work on Solaris provided you
+have GNU Make installed.
+
+To build the programs:
+
+1. Unpack the archive into a suitable directory. If you're
+reading this file, you've probably already done that.
+
+2. Edit the Makefile in the top level directory. Change the
+names of the assembler, compiler and linker (AS, CC and LD)
+to match your compiler.
+
+3. In the top level directory, type "make bin/davros" for the
+kernel + qdf interpreter or "make bin/kerntest" for the kernel test
+suite. The binaries (in the bin directory) can then be loaded into the
+CPU and started.
+
+4. Have fun!

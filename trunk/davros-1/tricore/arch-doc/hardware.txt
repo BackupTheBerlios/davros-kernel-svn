@@ -1,0 +1,18 @@
+The programs in this archive are intended for use on the
+Tricore CPU family. Currently the only supported hardware
+is the Triboard development platform fitted with a TC10GP
+CPU, although support for other Tricore platforms could
+be added fairly easily.
+
+All the programs are located at 0xa8010000, so should be
+loadable under a standalone boot loader or through
+a JTAG debugger.
+
+Why Tricore?
+============
+
+1. I have access to one for development.
+
+2. The CPU and its EABI aren't very tolerant of commonly-
+made but questionable assumptions about parameter passing, so
+if the code runs on Tricore it should run on most other CPUs.

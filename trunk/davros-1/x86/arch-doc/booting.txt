@@ -1,0 +1,48 @@
+How to boot Davros on your old PC.
+==================================
+
+1. Download a copy fo GrUB from the FSF ftp site. I've been using
+   version 0.91.
+   Build as required. I have the ne and 3com network drivers
+   compiled in, and I'm booting Davros from my main PC over tftp.
+
+2. Insert a blank floppy, become root, and type these commands:
+      fdformat /dev/f0
+      mke2fs /dev/fd0
+      mount -t ext2fs /dev/fd0 /floppy
+      grub-install --root-directory=/floppy '(fd0)'
+   Then edit /floppy/boot/grub/device.map to remove the hd entry.
+   Afterwards run the grub-install command again.
+   You might have to adjust the commands to suit your host.
+   *** WARNING *** be careful. You could destroy your
+   system if you mistyped these commands!
+
+3. Create the file /floppy/boot/grub/menu.lst. Here's mine:
+      serial --unit=0 --speed=9600
+      terminal serial console
+      default 0
+      ifconfig --address=192.168.8.2 --server=192.168.8.3
+
+      title Boot /davros from network
+      root (nd)
+      kernel /davros
+
+   Using this config, grub will run over a serial line, so you
+   don't need a monitor on the PC. Davros uses the serial lines
+   too - there's no support for the PC's console at the moment.
+   There are also options in grub to boot from the floppy or even
+   the hard disk. Read the manual.
+
+4. *** Important *** before ejecting the floppy, unmount it:
+      umount /floppy
+
+5. Set up the tftp server on your PC. You'll probably need to edit
+   /etc/inetd.conf to enable it and to set the root directory.
+   If your host is connected to the internet you'd be advised to
+   use a firewall to prevent access to the tftp server from
+   outside.
+
+6. Copy your davros kernel to the tftp root directory.
+
+7. Boot your target PC from the floppy, and select the
+   "davros" entry from the menu.

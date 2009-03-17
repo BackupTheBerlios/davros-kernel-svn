@@ -1,0 +1,10 @@
+This is the changelog for the common tree.
+
+Changes in version 0.4:
+	h/drv/tty.h - fix bug in comment :-)
+    h/forth/qdftypes.h - change conditional to allow cross-compilation for PC
+        target.
+    h/davros/kernel.h - add prototypes for get_interrupt_handler &
+        get_interrupt_parameter.
+    drv/Makefile.m - rules for new files
+	Plus a load of new files to support additional hardware.

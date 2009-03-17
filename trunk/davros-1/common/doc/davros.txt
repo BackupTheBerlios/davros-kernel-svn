@@ -1,0 +1,93 @@
+"Davros"
+
+Davros is a small OS kernel based on a kernel I wrote for
+the 6303 micro (8-bit) some years ago. Actually, "wrote" is
+a bit rich; it was based on Doug Comer's XINU kernelr, so
+"stole" might fit better.
+
+The 6303 kernel is still in use by TDSi (the company I worked
+for at the time), as the embedded OS for their range of products.
+It has since been ported to the 68hc11, and has had numerous
+hardware-specific tweaks done to it to get it to run as fast
+as possible. Davros has none of those tweaks.
+
+The kernel is comprehensively described in "Operating System Design -
+The XINU Approach", by Doug Comer (Prentice-Hall, ISBN 0-13-637539-1),
+so I'm not going to go into any great detail here. I heartily
+recommend this book as an introduction to the concepts
+of operating system design. If you can, buy a copy of the
+original PDP11 version. The PC version (at least, the first
+edition of it) used the PC bios for many things, and so
+a lot of the techniques of device management were glossed
+over or omitted. The main differences between Davros and
+XINU are:
+   - Davros uses pointers instead of indices. It's faster,
+     and eliminates the limit on the number of processes,
+     semaphores, etc.
+   - The process structure and stack are allocated as a single
+     chunk. This ensures that if a process has a stack
+     overflow, the first thing it trashes is its own
+     process-table entry. Stack overflow is a common
+     problem when developing embedded systems, where memory
+     is often in short supply.
+   - The functon names are prefixed with "__davros". This
+     is to leave me the option of adding system calls later,
+     so that some tasks can run in user mode (and possibly also
+     in virtual memory). Eventually I'd like to add an API
+     layer so that the original XINU names are preserved, both
+     in kernel mode and in user mode.
+   - I've tried to make it as portable as possible, so it
+     shouldn't be a serious problem to add support for
+     other processors. One day I might do a MIPS variant,
+     and of course the inevitable x86, depending on
+     availability of hardware for development.
+   - Quite a lot of XINU isn't implemented yet, and might
+     never be. It really depends on hardware and motivation.
+     If no-one needs it, I won't do it.
+
+There are numerous other differences, mainly of style rather
+than implementation and of course hardware-dependencies, so
+"Use the source, Luke", as they say.
+
+One thing I plan to do is move the explicit reschedule calls
+out of the kernel functions and into the "leavekernel" function.
+This will make several things possible:
+   - use of hardware-specific context-switch aids
+   - use of a hardware interrupt stack
+   - keeping interrupts enabled during kernel functions.
+     This will speed up responses to interrupts, and
+     should also bring the determinism required for hard
+     real-time systems. However, it comes at a price of
+     a slower context switch, so the method will be optional.
+
+The code is released under the GPL. Unfortunately, that means that
+if you want to use it in a product, you'll have to release the
+source code of your entire product under the same conditions, otherwise
+you'll be infringing the copyrights in the source code. The GPL
+isn't very friendly for embedded systems, because the application,
+OS and everything are typically linked into one huge executable
+and programmed into some kind of ROM. So, if you want to use this
+code in your closed-source project, please contact me for a
+"license". I'm not looking for any fees (although donations of
+hardware are never unwelcome). All I ask is that any modifications,
+enhancements or bugfixes you make to the OS be returned to me for
+incorporation in the GPL release (at my option). Oh, and before you
+ask: the LGPL isn't much nicer either. You have to release relocatable
+objects of your closed source stuff so that customers can modify
+the GPL bits and rebuild.
+
+"Who is Doug Comer?" Try a Google search, or go to www.purdue.edu
+& search there. He's really quite famous.
+
+How did Davros get its name? Perhaps it's some kind
+of concoction out of my name, and the inevitable OS for
+"Operating System", and, as the late Nigel Hawthorne might
+have said: "You may well be right. I cannot possibly comment".
+However, in my defence I will point out that TDSi used to have
+a number of products named after the BBC series "Dr. Who",
+including the TimeLord range of attendance recorders, and
+a clock-card printing machine called K9, so named because
+of its appearance. I rest my case.
+
+David Haworth --- 17th January 2002
+dave@fen-net.de

@@ -1,0 +1,44 @@
+This archive contains Davros, QDF (Quick and Dirty Forth) compiler
+and interpreter for the Tricore TC10GP processor (Triboard).
+There's also a rudimentary (and mostly untested) monitor
+program.
+
+History (newest first)
+
+Version 0.3 Kernel now has tty driver for 2 ASC channels
+            Bug in ctxsw fixed (wasn't restoring interrupt status)
+			qdf can run as a process
+
+Version 0.2 First kernel release. Multitasking works (sort of)
+			Timer interrupt & sleep queues OK.
+
+Version 0.1 (i.e. very young, and probably full'o'bugs). qdf only.
+
+Written by David Haworth (dave&fen-net.de) Bug reports
+and other messages accepted. I'll try my best to reply
+and even to fix the bugs, but I can't guarantee anything.
+
+Please read the files in the doc and arch-doc subdirectories
+before attempting to use the programs in this archive.
+
+If you find the code useful and want to incorporate it into
+your own non-GPL programs, please contact me for permission.
+I might consider releasing the code under the less restrictive
+LGPL if there's demand.
+
+Copyright 2001 David Haworth
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+It is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; see the file doc/COPYING.  If not, write to
+the Free Software Foundation, 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.
