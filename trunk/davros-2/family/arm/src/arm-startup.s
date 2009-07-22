@@ -27,7 +27,7 @@ __DV_IDENT("$Id$")
 #endif
 
 /*==============================================================================
- *	__dv_arm_startup - assembler startup code for ppc family processors
+ *	__dv_arm_startup - assembler startup code for arm family processors
  *==============================================================================
 */
 	.global	__dv_arm_startup
