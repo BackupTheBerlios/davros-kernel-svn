@@ -216,3 +216,9 @@ static char *_prt16(unsigned long val, char *str, char *hexdgt)
 	} while ( val != 0 );
 	return(str);
 }
+
+/* Workaround for broken/non-standard gcc behaviour
+*/
+void __stack_chk_fail(void)
+{
+}
