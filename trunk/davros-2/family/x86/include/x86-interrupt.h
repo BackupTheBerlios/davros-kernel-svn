@@ -32,4 +32,13 @@ __DV_IDENT("$Id$")
 
 #define __DV_NUMINT		16
 
+#define __DV_INTNUM_TIMER	0
+#define __DV_INTNUM_KBD		1
+#define __DV_INTNUM_TTY0	4
+#define __DV_INTNUM_TTY1	3
+#define __DV_INTNUM_FD		6
+#define __DV_INTNUM_PAR		7
+#define __DV_INTNUM_RTC		8
+#define __DV_INTNUM_IDE0	14
+
 #endif
