@@ -1,4 +1,4 @@
-/*	vectors.s - interrupt and exception vectors for tricore
+/*	vectors.s - interrupt and exception vectors for x86
  *
  *	Copyright 2002 David Haworth
  *

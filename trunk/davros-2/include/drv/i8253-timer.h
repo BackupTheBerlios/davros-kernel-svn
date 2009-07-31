@@ -31,11 +31,13 @@ __DV_IDENT("$Id$")
 #ifndef __DV_ASM
 
 /* For davros' system timer we use timer 2 (configured as free-running) for the reference
- * time, and timer 0 (configured as 1 shot) for generating interrupts.
+ * time, and timer 0 (configured as 1 shot) for generating interrupts. Timer 0 is the
+ * only timer that's connected to the interrupt controller.
+ *
  * The timer is 16-bits, so we must enforce the wrap
  * The timer is a down-counter so we negate if for use in the kernel.
 */
-#define __DV_TIMER_INTVEC	__DV_INTNUM_TIMER1
+#define __DV_TIMER_INTVEC	__DV_INTNUM_TIMER
 
 #define __dv_readtimer()	(-__dv_i8253_read(__dv_i8253_base, i8253_c2))
 #define __dv_subtimer(x, y)	(((x)-(y))&0xffff)

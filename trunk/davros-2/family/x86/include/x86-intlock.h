@@ -41,6 +41,6 @@ __DV_IDENT("$Id$")
 	do {						\
 	} while (0)
 
-#define __dv_enable()	__dv_set_cpsr((__dv_get_cpsr() & ~__DV_PSR_IRQ))
+#define __dv_enable()	__asm("sti" : : : "memory");
 
 #endif
