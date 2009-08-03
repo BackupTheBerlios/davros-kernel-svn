@@ -1,0 +1,31 @@
+# Makefile - for test/timer of davros
+#
+# (c) 2008 David Haworth
+#
+# This file is part of davros.
+#
+# davros is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# davros is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with davros.  If not, see <http://www.gnu.org/licenses/>.
+#
+# $Id$
+
+#DV_FAMILY ?= ppc
+#DV_CPU ?= 5554
+DV_FAMILY ?= x86
+
+VPATH += src
+
+DV_OBJS = $(DV_OBJDIR)/timer.$(O)
+
+include config/davros-config.make
+include $(DAVROS_BASE)/make/davros.make

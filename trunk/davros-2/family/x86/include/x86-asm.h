@@ -1,4 +1,6 @@
-/*	x86-interrupt.h - header file for x86 interrupt controller
+/*	x86-asm.h - assembler macros for the x86
+ *
+ *	DO NOT INCLUDE THIS FILE FROM C OR ANY OTHER HLL
  *
  *	Copyright 2008 David Haworth
  *
@@ -18,18 +20,15 @@
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __dv_x86_interrupt_h
-#define __dv_x86_interrupt_h
+#ifndef __dv_x86_asm_h
+#define __dv_x86_asm_h
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
-/* FIXME: eventually we'll have to select the appropriate file based on CPU, board, ...
- * For now we just assume a standard PC arrangement of 8259s
-*/
-#include <drv/i8259-pic.h>
-#include <x86-pc.h>
-
+#if !defined __DV_ASM
+#define __DV_ASM
+#endif
 
 #endif

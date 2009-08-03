@@ -1,6 +1,6 @@
-/*	x86-interrupt.h - header file for x86 interrupt controller
+/*	x86-cstartup.c - __dv_C_startup (for x86 family)
  *
- *	Copyright 2008 David Haworth
+ *	Copyright 2009 David Haworth
  *
  *	This file is part of davros.
  *
@@ -17,19 +17,26 @@
  *	You should have received a copy of the GNU General Public License
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#ifndef __dv_x86_interrupt_h
-#define __dv_x86_interrupt_h
+#include <davros/config.h>
+#include <davros/constants.h>
+#include <davros/basic-types.h>
+#include <davros/init.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
-/* FIXME: eventually we'll have to select the appropriate file based on CPU, board, ...
- * For now we just assume a standard PC arrangement of 8259s
+const __dv_stackelement_t *__dv_irq_sp = &__dv_nullstack[DV_CFG_NULLSTACK_LEN];
+
+/*==============================================================================
+ *	__dv__C_startup - the C part of the system startup code
+ *==============================================================================
 */
-#include <drv/i8259-pic.h>
-#include <x86-pc.h>
+void __dv_C_startup(void)
+{
+	/* Disable all interrupt sources.
+	*/
 
-
-#endif
+	/* Clear all pending interrupts.
+	*/
+}

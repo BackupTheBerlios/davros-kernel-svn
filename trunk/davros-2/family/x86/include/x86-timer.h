@@ -29,5 +29,6 @@ __DV_IDENT("$Id$")
  * For now, we'll assume an i8253 (standard PC)
 */
 #include <drv/i8253-timer.h>
+#include <x86-pc.h>
 
 #endif

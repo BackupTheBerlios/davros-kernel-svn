@@ -1,4 +1,4 @@
-/*	x86-interrupt.h - header file for x86 interrupt controller
+/*	synchonous.c - Davros test : synchronous
  *
  *	Copyright 2008 David Haworth
  *
@@ -17,19 +17,29 @@
  *	You should have received a copy of the GNU General Public License
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#ifndef __dv_x86_interrupt_h
-#define __dv_x86_interrupt_h
+#include <davros/config.h>
+#include <davros.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
-/* FIXME: eventually we'll have to select the appropriate file based on CPU, board, ...
- * For now we just assume a standard PC arrangement of 8259s
+unsigned char DV_CFG_HEAPBASE[DV_CFG_HEAPSIZE];
+
+volatile unsigned test_counter;
+
+/*==============================================================================
+ *	test_func - entry function for test processes
+ *==============================================================================
 */
-#include <drv/i8259-pic.h>
-#include <x86-pc.h>
+int test_func(int nargs, int *args)
+{
+	for (;;)
+	{
+		test_counter++;
 
+		DvSleep(5000000);
+	}
 
-#endif
+	return 0;
+}

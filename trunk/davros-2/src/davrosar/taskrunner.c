@@ -1,4 +1,4 @@
-/*	x86-interrupt.h - header file for x86 interrupt controller
+/*	taskrunner.c - __dvs_taskrunner
  *
  *	Copyright 2008 David Haworth
  *
@@ -17,19 +17,16 @@
  *	You should have received a copy of the GNU General Public License
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#ifndef __dv_x86_interrupt_h
-#define __dv_x86_interrupt_h
+#include <davros/config.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
-/* FIXME: eventually we'll have to select the appropriate file based on CPU, board, ...
- * For now we just assume a standard PC arrangement of 8259s
+/*==============================================================================
+ *	__dvs_taskrunner - management function for davrosar tasks, IRSs etc.
+ *==============================================================================
 */
-#include <drv/i8259-pic.h>
-#include <x86-pc.h>
-
-
-#endif
+int __dvs_taskrunner(int nargs, int *args)
+{
+}

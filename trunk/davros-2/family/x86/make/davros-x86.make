@@ -39,7 +39,7 @@ DV_OBJS_ARCH += $(DV_OBJDIR)/x86-cstartup.$(O)
 #DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/x86-icp-enableint.$(O)
 #DV_KERN_OBJS_ARCH += $(DV_OBJDIR)/x86-icp-disableint.$(O)
 
-DV_TOOLPREFIX = 
+DV_TOOLPREFIX ?= 
 
 CC = $(DV_TOOLPATH)/bin/$(DV_TOOLPREFIX)gcc
 CC_OPT = -g -std=iso9899:1999 -Wall -c

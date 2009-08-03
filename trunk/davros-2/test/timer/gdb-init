@@ -1,0 +1,5 @@
+target remote tcp:localhost:1234
+load bin/davros.elf
+b __dv_C_startup
+j __dv_arm_startup
+

@@ -51,10 +51,6 @@ __dv_status_t __dv_stoptimer(void);
 __dv_uint32_t __dv_i8253_read(__dv_address_t, __dv_int_t);
 void __dv_i8253_write(__dv_address_t, __dv_int_t, __dv_uint32_t val);
 
-/* The address of this "variable" is usually defined in the linker file
-*/
-extern __dv_uint16_t __dv_i8253_base;
-
 #endif
 
 #define __DV_MAXINTERVAL		0xc000

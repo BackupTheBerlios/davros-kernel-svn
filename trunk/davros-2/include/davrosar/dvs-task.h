@@ -1,4 +1,4 @@
-/*	x86-interrupt.h - header file for x86 interrupt controller
+/*	dvs-task.h - Davrosar TASK description
  *
  *	Copyright 2008 David Haworth
  *
@@ -18,18 +18,34 @@
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __dv_x86_interrupt_h
-#define __dv_x86_interrupt_h
+#ifndef __dvs_task_h
+#define __dvs_task_h
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
-/* FIXME: eventually we'll have to select the appropriate file based on CPU, board, ...
- * For now we just assume a standard PC arrangement of 8259s
-*/
-#include <drv/i8259-pic.h>
-#include <x86-pc.h>
+#include <davros/object.h>
+#include <davros/process.h>
 
+typedef struct __dvs_taskstate_s __dvs_taskstate_t;
+typedef struct __dvs_taskdescr_s __dvs_taskdescr_t;
+
+struct __dvs_taskstate_s
+{
+	const __dvs_taskdescr_t *descr;			/*	(Constant) descriptor */
+	__dv_processstate_t *runner;
+	__dvs_taskstate_t state;
+	__dvs_taskact_t n_activations;
+};
+
+struct __dvs_taskdescr_s
+{
+	__dvs_taskentry_t function;
+	__dvs_stacklen_t stack_len;
+	__dvs_taskprio_t queue_prio;
+	__dvs_taskprio_t run_prio;
+	__dvs_taskact_t max_activations
+};
 
 #endif

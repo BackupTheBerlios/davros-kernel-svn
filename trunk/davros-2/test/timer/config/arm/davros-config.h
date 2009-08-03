@@ -1,4 +1,4 @@
-/*	x86-interrupt.h - header file for x86 interrupt controller
+/* davros-config.h - configuration for synchronous tests (arm)
  *
  *	Copyright 2008 David Haworth
  *
@@ -18,18 +18,31 @@
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __dv_x86_interrupt_h
-#define __dv_x86_interrupt_h
+#ifndef __davros_config_h
+#define __davros_config_h
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
-/* FIXME: eventually we'll have to select the appropriate file based on CPU, board, ...
- * For now we just assume a standard PC arrangement of 8259s
+/* Specific configuration. See config.h for descriptions
 */
-#include <drv/i8259-pic.h>
-#include <x86-pc.h>
+#define DV_CFG_CPUFAMILY		__DV_CPUFAMILY_ARM
+#define DV_CFG_CPU				__DV_ARM_926
+#define DV_CFG_EXTRASTACK		16
+#define DV_CFG_STACK_SPARE		4
 
+#define DV_CFG_HEAPBASE			test_heap
+#define DV_CFG_HEAPSIZE			8192
+
+#define DV_CFG_USERPROCESS		"test", test_func, 0, __DV_NULL, 512, 0
+
+/* Declarations for the startup function
+ * No need for assembler protection - it's implicit in the file!
+*/
+#ifdef DV_FILE_STARTUP
+extern unsigned char DV_CFG_HEAPBASE[DV_CFG_HEAPSIZE];
+int test_func(int, int*);
+#endif
 
 #endif

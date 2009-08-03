@@ -1,4 +1,4 @@
-/*	arm-asm.h - assembler macros for the PowerPC
+/*	arm-asm.h - assembler macros for arm
  *
  *	DO NOT INCLUDE THIS FILE FROM C OR ANY OTHER HLL
  *
