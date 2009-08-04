@@ -1,4 +1,4 @@
-/*	x86-timer.h - timer header for x86 family
+/*	x86-pc.h - definitions for the x86 "IBM PC" architecture
  *
  *	Copyright 2008 David Haworth
  *
@@ -18,17 +18,29 @@
  *	along with davros.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __dv_x86_timer_h
-#define __dv_x86_timer_h
+#ifndef __dv_x86_pc_h
+#define __dv_x86_pc_h
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
-/* FIXME: eventually this file will have to select the timer depending on ... on WHAT???
- * For now, we'll assume an i8253 (standard PC)
+/* I/O addresses of peripherals
 */
-#include <x86-pc.h>
-#include <drv/i8253-timer.h>
+#define __dv_i8253_base		0x40
+
+/* Interrupt assignments
+*/
+#define __DV_NUMINT			16
+
+#define __DV_INTNUM_TIMER	0
+#define __DV_INTNUM_KBD		1
+#define __DV_INTNUM_TTY0	4
+#define __DV_INTNUM_TTY1	3
+#define __DV_INTNUM_FD		6
+#define __DV_INTNUM_PAR		7
+#define __DV_INTNUM_RTC		8
+#define __DV_INTNUM_IDE0	14
+
 
 #endif

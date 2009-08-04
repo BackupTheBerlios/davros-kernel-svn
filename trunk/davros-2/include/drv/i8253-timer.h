@@ -39,21 +39,16 @@ __DV_IDENT("$Id$")
 */
 #define __DV_TIMER_INTVEC	__DV_INTNUM_TIMER
 
-#define __dv_readtimer()	(-__dv_i8253_read(__dv_i8253_base, i8253_c2))
 #define __dv_subtimer(x, y)	(((x)-(y))&0xffff)
 
 __dv_status_t __dv_inittimer(void);
 __dv_status_t __dv_settimer(__dv_uint32_t, __dv_uint32_t);
 __dv_status_t __dv_stoptimer(void);
-
-/*  These must be supplied by the board config
-*/
-__dv_uint32_t __dv_i8253_read(__dv_address_t, __dv_int_t);
-void __dv_i8253_write(__dv_address_t, __dv_int_t, __dv_uint32_t val);
+__dv_uint32_t __dv_readtimer(void);
 
 #endif
 
-#define __DV_MAXINTERVAL		0xc000
-#define __DV_DEFINTERVAL		0x8000
+#define __DV_MAXINTERVAL		0xe000
+#define __DV_DEFINTERVAL		0xc000
 
 #endif

@@ -26,8 +26,14 @@ endif
 
 # Which compiler/assembler/linker are we using, and where is it?
 DV_TOOL = gnu
-DV_TOOLPATH = /home/dave/gnu/x86-4.4.1
-DV_TOOLPREFIX = i386-linux-elf-
+
+ifeq ($(wildcard /home/dave/gnu/x86-4.4.1/bin/i386-linux-elf-gcc),)
+  DV_TOOLPATH = /usr
+  DV_TOOLPREFIX = 
+else
+  DV_TOOLPATH = /home/dave/gnu/x86-4.4.1
+  DV_TOOLPREFIX = i386-linux-elf-
+endif
 
 # Linker scripts
 DV_LDSCRIPT = config/x86/davros.ld

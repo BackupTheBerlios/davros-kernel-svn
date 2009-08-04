@@ -37,6 +37,7 @@ S = s
 
 VPATH += $(DAVROS_BASE)/src/davros
 VPATH += $(DAVROS_BASE)/src/dvlib
+VPATH += $(DAVROS_BASE)/src/drv
 VPATH += $(DV_GENDIR)
 
 # Davros kernel object files: miscellaneous

@@ -84,4 +84,15 @@ __DV_IDENT("$Id$")
 #define GD1_TYPE_INT		0x00000600
 #define GD1_TYPE_TRAP		0x00000700
 
+#ifndef __DV_ASM
+/* Input/output operations
+*/
+__dv_uint32_t __dv_in8(__dv_uint32_t);
+__dv_uint32_t __dv_in16(__dv_uint32_t);
+__dv_uint32_t __dv_in32(__dv_uint32_t);
+void __dv_out8(__dv_uint32_t, __dv_uint32_t);
+void __dv_out16(__dv_uint32_t, __dv_uint32_t);
+void __dv_out32(__dv_uint32_t, __dv_uint32_t);
+#endif
+
 #endif

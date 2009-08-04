@@ -20,7 +20,14 @@
 # $Id$
 
 # Where are the davros sources?
-DAVROS_BASE = /home/dave/berlios/svn/davros-2
+ifeq ($(wildcard /home/dave),)
+  ifeq ($(wildcard /home/dh),)
+  else
+    DAVROS_BASE ?= $(wildcard /home/dh/berlios/davros/svn/davros-2)
+  endif
+else
+  DAVROS_BASE ?= $(wildcard /home/dave/berlios/svn/davros-2)
+endif
 
 # Where to put the object files and library files?
 DV_GENDIR = gen
