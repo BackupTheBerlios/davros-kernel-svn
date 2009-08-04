@@ -84,6 +84,12 @@ __DV_IDENT("$Id$")
 #define GD1_TYPE_INT		0x00000600
 #define GD1_TYPE_TRAP		0x00000700
 
+/* MSRs
+*/
+#define __DV_MSR_SYSENTER_CS	0x174		/* Segment (base) for sysenter/sysexit */
+#define __DV_MSR_SYSENTER_SP	0x175		/* Stack pointer for sysenter */
+#define __DV_MSR_SYSENTER_PC	0x176		/* Program counter for sysenter */
+
 #ifndef __DV_ASM
 /* Input/output operations
 */

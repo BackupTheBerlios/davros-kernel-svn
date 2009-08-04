@@ -66,8 +66,6 @@ cold_boot:
 
 	movl	$__dv_kernel_sp,%esp
 	movl	$0,%ebp
-	pushl	$(FLAG_1)
-	popfl
 
 	movl	$_gdtr,%eax
 	lgdt	(%eax)
@@ -87,6 +85,27 @@ cold_boot:
 	movw	%ax,%gs
 	movw	%ax,%ss
 
+	pushl	$(FLAG_1)
+	popfl
+
+	movl	$0,%edx
+	movl	$0x0008,%eax
+	movl	$__DV_MSR_SYSENTER_CS,%ecx
+	wrmsr
+
+	movl	%esp,%eax
+	movl	$__DV_MSR_SYSENTER_SP,%ecx
+	wrmsr
+
+	movl	$__dv_syscall,%eax
+	movl	$__DV_MSR_SYSENTER_PC,%ecx
+	wrmsr
+
+	movl	$_continue,%edx
+	movl	%esp,%ecx
+	sysexit
+
+_continue:
 	call	__dv_C_startup
 	call	__dv_startup
 	jmp		__dv_x86_startup		/* Can't boot. Try again */
