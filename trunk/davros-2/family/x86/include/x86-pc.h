@@ -1,6 +1,6 @@
-/*	x86-pc.h - definitions for the x86 "IBM PC" architecture
+/*	x86-pc.h - header file for an x86-based PC
  *
- *	Copyright 2008 David Haworth
+ *	Copyright 2009 David Haworth
  *
  *	This file is part of davros.
  *
@@ -25,13 +25,35 @@
 __DV_IDENT("$Id$")
 #endif
 
-/* I/O addresses of peripherals
+/* I/O addresses of standard PC peripherals
 */
-#define __dv_i8253_base		0x40
+#define __dv_i8259_master	0x20		/* Master interrupt controller */
+#define __dv_i8259_slave	0xa0		/* Slave interrupt controller */
+#define __dv_i8253_base		0x40		/* Programmable interval timer */
+#define __dv_i8250_com1		0x3f8		/* UART COM1 */
+#define __dv_i8250_com2		0x2f8		/* UART COM2 */
 
-/* Interrupt assignments
+/* Master interrupt controller:
+ *  0 = Timer
+ *  1 = Keyboard
+ *  2 = Secondary (cascade)
+ *  3 = Serial 1 ("COM2")
+ *  4 = Serial 0 ("COM1")
+ *  5 =
+ *  6 = Floppy
+ *  7 = Parallel
+ *
+ * Slave interrupt controller:
+ *  0 (8) = RTC
+ *  1 (9) =
+ *  2 (10) =
+ *  3 (11) =
+ *  4 (12) =
+ *  5 (13) =
+ *  6 (14) = IDE0
+ *  7 (15) =
 */
-#define __DV_NUMINT			16
+#define __DV_NUMINT		16
 
 #define __DV_INTNUM_TIMER	0
 #define __DV_INTNUM_KBD		1
@@ -41,6 +63,5 @@ __DV_IDENT("$Id$")
 #define __DV_INTNUM_PAR		7
 #define __DV_INTNUM_RTC		8
 #define __DV_INTNUM_IDE0	14
-
 
 #endif

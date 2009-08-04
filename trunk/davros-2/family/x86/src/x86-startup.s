@@ -44,6 +44,7 @@ __DV_IDENT("$Id$")
 	.extern	__dv_C_startup
 	.extern	__dv_startup
 	.extern	__dv_kernel_sp
+	.extern	__dv_syscall
 
 	.text
 

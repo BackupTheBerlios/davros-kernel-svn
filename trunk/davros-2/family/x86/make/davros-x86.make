@@ -23,6 +23,7 @@ VPATH += $(DAVROS_BASE)/family/x86/src
 
 DV_OBJS_ARCH += $(DV_OBJDIR)/x86-startup.$(O)
 DV_OBJS_ARCH += $(DV_OBJDIR)/x86-cstartup.$(O)
+DV_OBJS_ARCH += $(DV_OBJDIR)/x86-syscall.$(O)
 DV_OBJS_ARCH += $(DV_OBJDIR)/x86-in8.$(O)
 DV_OBJS_ARCH += $(DV_OBJDIR)/x86-in16.$(O)
 DV_OBJS_ARCH += $(DV_OBJDIR)/x86-in32.$(O)
