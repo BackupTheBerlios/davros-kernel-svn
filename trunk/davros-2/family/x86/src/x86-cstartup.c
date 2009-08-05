@@ -21,6 +21,7 @@
 #include <davros/constants.h>
 #include <davros/basic-types.h>
 #include <davros/init.h>
+#include <x86-interrupt.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
@@ -34,9 +35,5 @@ const __dv_stackelement_t *__dv_irq_sp = &__dv_nullstack[DV_CFG_NULLSTACK_LEN];
 */
 void __dv_C_startup(void)
 {
-	/* Disable all interrupt sources.
-	*/
-
-	/* Clear all pending interrupts.
-	*/
+	__dv_init_pic();		/* All interrupt sources disabled */
 }

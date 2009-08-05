@@ -30,6 +30,7 @@ DV_OBJS_ARCH += $(DV_OBJDIR)/x86-in32.$(O)
 DV_OBJS_ARCH += $(DV_OBJDIR)/x86-out8.$(O)
 DV_OBJS_ARCH += $(DV_OBJDIR)/x86-out16.$(O)
 DV_OBJS_ARCH += $(DV_OBJDIR)/x86-out32.$(O)
+DV_OBJS_ARCH += $(DV_OBJDIR)/x86-pc-int.$(O)
 #DV_OBJS_ARCH += $(DV_OBJDIR)/x86-vectors.$(O)
 
 DV_OBJS_ARCH += $(DV_OBJDIR)/drv-i8253.$(O)

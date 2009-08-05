@@ -124,6 +124,8 @@ DV_USR_OBJS += $(DV_USR_OBJS_ARCH)
 # Davros system objects
 DV_OBJS += $(DV_OBJS_ARCH)
 
+DV_ENTRY_LABEL ?= __dv_$(DV_FAMILY)_startup
+
 lib:	$(DV_LIBDIR)/libdavros.a $(DV_LIBDIR)/libdvusr.a $(DV_LIBDIR)/libdv.a
 
 bin:	$(DV_BINDIR)/davros.elf
@@ -143,7 +145,7 @@ $(DV_LIBDIR)/libdvusr.a:	$(DV_USR_OBJS)
 	$(AR) $(AR_OPT) $@ $(DV_USR_OBJS)
 
 $(DV_BINDIR)/davros.elf:	$(DV_OBJDIR) $(DV_OBJS) 
-	$(LD) $(LD_OPT) -o $@ $(DV_OBJS) -L $(DV_LIBDIR) -ldavros -ldvusr -T $(DV_LDSCRIPT)
+	$(LD) $(LD_OPT) -o $@ $(DV_OBJS) -L $(DV_LIBDIR) -ldavros -ldvusr -T $(DV_LDSCRIPT) -e $(DV_ENTRY_LABEL)
 
 CC_INC = $(addprefix -I,$(DV_INCDIR))
 CC_INC += -I$(DV_FAMILYDIR)/include

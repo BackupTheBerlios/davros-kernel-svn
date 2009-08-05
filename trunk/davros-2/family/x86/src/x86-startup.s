@@ -46,8 +46,7 @@ __DV_IDENT("$Id$")
 	.extern	__dv_kernel_sp
 	.extern	__dv_syscall
 
-	.text
-
+	.section	".dv_start","a"
 	.align	4
 __dv_x86_startup:
 	jmp	cold_boot		/* all we can do here. the boot word must be next */
@@ -70,14 +69,6 @@ cold_boot:
 
 	movl	$_gdtr,%eax
 	lgdt	(%eax)
-
-#if 0
-	/* 	For some reason we can't do this. But CS seems to contain
-	 *	the right value (0x0008) anyway
-	*/
-	movw	$0x0008,%ax
-	movw	%ax,%cs
-#endif
 
 	movw	$0x0010,%ax
 	movw	%ax,%ds
@@ -102,9 +93,11 @@ cold_boot:
 	movl	$__DV_MSR_SYSENTER_PC,%ecx
 	wrmsr
 
+#if 0
 	movl	$_continue,%edx
 	movl	%esp,%ecx
 	sysexit
+#endif
 
 _continue:
 	call	__dv_C_startup
@@ -119,7 +112,7 @@ _continue:
 
 	.align	8
 _gdtr:
-	.word	23		/* 3 * 8 - 1 */
+	.word	39		/* 5 * 8 - 1 */
 	.long	_gdt
 
 	.align	8
@@ -128,20 +121,18 @@ _gdt:
 	.long	0
 	.long	0
 
-	/*	1 (0x0008):	Code descriptor */
+	/*	1 (0x0008):	System code descriptor */
 	.long	DT0_LIMIT
 	.long	DT1_G | DT1_DB | DT1_LIMIT | DT1_P | DT1_S | DT1_TYPE_CR
 
-	/*	2 (0x0010):	Data descriptor */
+	/*	2 (0x0010):	System data descriptor */
 	.long	DT0_LIMIT
 	.long	DT1_G | DT1_DB | DT1_LIMIT | DT1_P | DT1_S | DT1_TYPE_DW
 
-#if 0
-	/*	3 (0x0018):	Another code descriptor */
+	/*	3 (0x0018):	User code descriptor */
 	.long	DT0_LIMIT
 	.long	DT1_G | DT1_DB | DT1_LIMIT | DT1_P | DT1_S | DT1_TYPE_CR
 
-	/*	4 (0x0020):	Interrupt code descriptor */
+	/*	4 (0x0020):	User data code descriptor */
 	.long	DT0_LIMIT
-	.long	DT1_G | DT1_DB | DT1_LIMIT | DT1_P | DT1_S | DT1_TYPE_CR
-#endif
+	.long	DT1_G | DT1_DB | DT1_LIMIT | DT1_P | DT1_S | DT1_TYPE_DW

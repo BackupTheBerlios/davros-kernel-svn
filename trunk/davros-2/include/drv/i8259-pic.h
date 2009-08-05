@@ -28,5 +28,9 @@
 __DV_IDENT("$Id$")
 #endif
 
+void __dv_i8259_enable(__dv_uint32_t, __dv_uint8_t);
+void __dv_i8259_disable(__dv_uint32_t, __dv_uint8_t);
+void __dv_i8259_init(__dv_uint32_t, __dv_uint8_t, __dv_uint8_t, __dv_uint8_t, __dv_uint8_t);
+
 
 #endif

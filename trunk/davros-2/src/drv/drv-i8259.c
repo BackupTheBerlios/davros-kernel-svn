@@ -19,16 +19,64 @@
 */
 #include <davros/config.h>
 #include <davros/basic-types.h>
+#include <davros/interrupt.h>
+#include <drv/i8259-pic.h>
+#include <devices/i8259.h>
 
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
 
 /*==============================================================================
- *	__dv_enable_interrupt - enable an interrupt source on the PIC
+ *	__dv_i8259_enable - enable the interrupts specified by 1s in the mask
  *==============================================================================
 */
-__dv_status_t __dv_enable_interrupt(__dv_uint32_t inum)
+void __dv_i8259_enable(__dv_uint32_t base, __dv_uint8_t mask)
 {
-	return 0;
+	__dv_uint8_t old;
+
+	old = __dv_i8259_read(base, i8259_ocw1);
+	__dv_i8259_write(base, i8259_ocw1, (old & ~mask));
+}
+
+/*==============================================================================
+ *	__dv_i8259_disable - disable the interrupts specified by 1s in the mask
+ *==============================================================================
+*/
+void __dv_i8259_disable(__dv_uint32_t base, __dv_uint8_t mask)
+{
+	__dv_uint8_t old;
+
+	old = __dv_i8259_read(base, i8259_ocw1);
+	__dv_i8259_write(base, i8259_ocw1, (old | mask));
+}
+
+/*==============================================================================
+ *	__dv_i8259_init - initialise the 8259
+ *==============================================================================
+*/
+void __dv_i8259_init
+(	__dv_uint32_t base,		/* PIC base address */
+	__dv_uint8_t icw1,		/* Value for ICW1 */
+	__dv_uint8_t icw2,		/* Value for ICW2 */
+	__dv_uint8_t icw3,		/* Value for ICW3 */
+	__dv_uint8_t icw4		/* Value for ICW4 */
+)
+{
+    __dv_i8259_write(base, i8259_icw1, icw1 | I8259_ICW1);
+    __dv_i8259_write(base, i8259_icw2, icw2);
+
+    if ( (icw1 & I8259_ICW1_SNGL) == 0 )
+	{
+        __dv_i8259_write(base, i8259_icw3, icw3);
+	}
+
+    if ( (icw1 & I8259_ICW1_IC4) != 0 )
+	{
+        __dv_i8259_write(base, i8259_icw4, icw4);
+	}
+
+	/* Disable all interrupts
+	*/
+    __dv_i8259_write(base, i8259_ocw1, 0xff);
 }

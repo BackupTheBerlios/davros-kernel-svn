@@ -21,6 +21,8 @@
 #ifndef __dv_x86_pc_h
 #define __dv_x86_pc_h
 
+#include <x86-core.h>
+
 #ifdef __DV_IDENT
 __DV_IDENT("$Id$")
 #endif
@@ -63,5 +65,13 @@ __DV_IDENT("$Id$")
 #define __DV_INTNUM_PAR		7
 #define __DV_INTNUM_RTC		8
 #define __DV_INTNUM_IDE0	14
+
+/* The 8259 and 8253 are I/O-mapped
+*/
+#define __dv_i8259_read(base, offset)			__dv_in8(base+offset)
+#define __dv_i8259_write(base, offset, val)		__dv_out8(base+offset, val)
+
+#define __dv_i8253_read(base, offset)			__dv_in8(base+offset)
+#define __dv_i8253_write(base, offset, val)		__dv_out8(base+offset, val)
 
 #endif

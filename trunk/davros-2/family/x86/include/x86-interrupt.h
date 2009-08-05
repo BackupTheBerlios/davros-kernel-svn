@@ -31,5 +31,6 @@ __DV_IDENT("$Id$")
 #include <drv/i8259-pic.h>
 #include <x86-pc.h>
 
+__dv_status_t __dv_init_pic(void);
 
 #endif

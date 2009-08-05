@@ -31,6 +31,7 @@ __DV_IDENT("$Id$")
 #define DV_CFG_CPU				__DV_X86_X86
 #define DV_CFG_EXTRASTACK		16
 #define DV_CFG_STACK_SPARE		4
+#define DV_CFG_BASEIRQ			32
 
 #define DV_CFG_HEAPBASE			test_heap
 #define DV_CFG_HEAPSIZE			8192
