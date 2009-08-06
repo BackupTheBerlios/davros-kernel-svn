@@ -30,30 +30,36 @@ __DV_IDENT("$Id$")
 /*==============================================================================
  *	__dv_syscall - system call handler for x86 family processors
  *
- * This routine is entered by a jump from the SWI vector, which in
- * turn is invoked using the SWI instruction. The instruction
- * itself contains more information about the type of system call.
- * We therefore need to retrieve it.
+ * The address of this routine is loaded into MSR 0x176 at startup. This means
+ * that a SYSENTER instruction will cause a jump here.
  *
- * When SWI is executed the following things happen:
- *  - the PC is saved in r14_svc
- *  - the CPSR register is saved in SPSR_svc
- *  - the CPSR mode field is set to supervisor (svc) mode
- *  - the CPSR arm/thumb bit is set to 'arm'
- *  - IRQ is disabled
- *  - the SP is R13_svc, thus we automatically switched to kernel stack
- * Davros will be capable of accepting system calls from
- * system and user mode but not from any other mode.
+ * When SYSENTER is executed the following things happen:
+ *  MSR 0x174 is copied to %cs
+ *  MSR 0x175 is copied to %esp
+ *  MSR 0x176 is copied to %eip
+ *  The system is switched to privileged mode and interrupts are disabled.
  *
- * On entry the following conditions will be true:
- *  - up to 4 parameters will be passed in registers r0 to r3.
+ * Thus the processor will continue executing at __dv_syscall in privileged mode
+ * on the kernel stack.
+ *
+ * Note that no registers are saved. This means that in order to work properly, the
+ * system-call stub function must load the following registers:
+ *
+ *  %esi   - system-call index
+ *  %ebp   - stack pointer
+ *  %edi   - return address
+ *  %eax   - first parameter (if present)
+ *  %ebx   - second parameter (if present)
+ *  %ecx   - third parameter (if present)
+ *  %edx   - fourth parameter (if present)
  *
  * We need to:
- *  - set the in-kernel flag (saving the old value)
- *  - re-enable interrupts as they were before the syscall
- *  - extract the system-call index from the instruction
- *  - use the system-call index to get the address of the function
- *    to call, preserving the parameter registers.
+ *  - reserve a stack frame
+ *  - save the context (pc/sp in edi/ebp) in the stack frame
+ *  - store the parameters into the stack frame where expected by the kernel function
+ *  - set the in-kernel flag (saving the old value in the stack frame)
+ *  - re-enable interrupts as they were before the SYSENTER
+ *  - use the system-call index to get the address of the function to call.
  *  - call the function and ensure that the return value is not destroyed
  *  - on return, check if a context switch is needed. If not,
  *    restore old in-kernel and any saved registers and return, leaving
