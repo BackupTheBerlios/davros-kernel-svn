@@ -27,8 +27,7 @@
 __DV_IDENT("$Id$")
 #endif
 
-/*==============================================================================
- *	__dv_syscall - system call handler for x86 family processors
+/*	__dv_syscall - system call handler for x86 family processors
  *
  * The address of this routine is loaded into MSR 0x176 at startup. This means
  * that a SYSENTER instruction will cause a jump here.
@@ -46,8 +45,7 @@ __DV_IDENT("$Id$")
  * system-call stub function must load the following registers:
  *
  *  %esi   - system-call index
- *  %ebp   - stack pointer
- *  %edi   - return address
+ *  %ebp   - stack pointer - points at return address
  *  %eax   - first parameter (if present)
  *  %ebx   - second parameter (if present)
  *  %ecx   - third parameter (if present)
@@ -65,21 +63,10 @@ __DV_IDENT("$Id$")
  *    restore old in-kernel and any saved registers and return, leaving
  *    the return value from the sys.function intact.
  *  - if a context switch is needed, registers will need saving
- *    in the current task (if any) context, not forgetting the
- *    R13_usr and R14_usr registers.
- *
- * Register allocation:
- *	r0-r1  - before kernel function: parameters; afterwards: return value
- *  r2-r3  - before kernel function: parameters; afterwards: scratch
- *  r4     - nonvolatile: saved on stack; old __dv_in_kernel
- *  r5     - nonvolatile: saved on stack; address of __dv_in_kernel
- *  r6-r7  - nonvolatile: saved on stack; working registers
- *  r8-r11 - nonvolatile
- *  r12    - Intra-Procedure-call scratch register.
- *  r13    - (Kernel) stack pointer
- *  r14    - Link register (return address; saved on stack)
- *  r15    - PC
- *==============================================================================
+ *    in the current task (if any) context.
+ *  - to return, a "jump" to __dv_usr_return, which is essentially the "return" from
+ *    the assembler stub. If the process is non-trusted, this is achieved by a SYSEXIT.
+ *    For a trusted process we just restore the stack pointer and jump there.
 */
 	.text
 
@@ -87,68 +74,51 @@ __DV_IDENT("$Id$")
 
 	.extern	__dv_in_kernel
 	.extern	__dv_syscall_table
+	.extern	__dv_usr_return_from_syscall
+
+#define __DV_SYSCALL_EAX		0		/* Param 0 */
+#define __DV_SYSCALL_EBX		4		/* Param 1 */
+#define __DV_SYSCALL_ECX		8		/* Param 2 */
+#define __DV_SYSCALL_EDX		12		/* Param 3 */
+#define __DV_SYSCALL_OIK		16
+#define __DV_SYSCALL_ESI		20		/* System-call index */
+#define __DV_SYSCALL_ESP		24		/* Process stack pointer */
 
 __dv_syscall:
-#if 0
-	stmdb	r13!,{r4-r7,r14}		/* Push r4-r7 and return address on stack */
+	sub		$__DV_SYSCALL_FRAME,%esp		/* Reserve stack frame */
 
-#if __DV_CHECK_UNIMPLEMENTED
-#error "Not implemented: ensure caller was in sys or usr mode"
-#endif
+	mov		%eax,$__DV_SYSCALL_EAX(%esp)	/* Save parameters */
+	mov		%ebx,$__DV_SYSCALL_EBX(%esp)
+	mov		%ecx,$__DV_SYSCALL_ECX(%esp)
+	mov		%edx,$__DV_SYSCALL_EDX(%esp)
 
-/* Set the in-kernel flag, saving original value. This is so that interrupts occurring
- * during the system call will not switch away from the current process.
- * There is no need to check the old value on exit because system calls are only necessary
- * in process contexts and can only be used there.
-*/
-	ldr		r5,=__dv_in_kernel		/* r5 = &__dv_in_kernel */
-	mov		r6,#1
-	ldrb	r4,[r5]					/* r4 = __dv_in_kernel */
-	strb	r6,[r5]					/* __dv_in_kernel = 1 */
+	mov		%ebp,$__DV_SYSCALL_ESP(%esp)	/* Save caller's stack pointer */
 
-/* Re-enable interrupts as they were before the syscall
-*/
-#if 0
-	mrs		r7,SPSR
-	and		r7,#__DV_PSR_FIQ_IRQ	/* Isolate FIQ and IRQ mask bits in spsr value */
-	orr		r7,#__DV_PSR_MODE_SVC	/* ARM & SVC modes */
-	msr		CPSR_c,r7				/* Write new value back to cpsr */
-#endif
+	mov		__dv_in_kernel,%al				/* Save in_kernel flag and set to 1 */
+	mov		%eax,$__DV_SYSCALL_OIK(%esp)
+	mov		$1,__dv_in_kernel
 
-/* Get the 24-bit operand from the SWI instruction
-*/
-	ldr		r7,=0xffffff			/* 24 bits */
-	ldr		r6,[r14,#-4]			/* Get SWI instruction - SYSCALL index is embedded in it */
-	and		r6,r6,r7				/* Isolate bottom 24 bits */
+	cli										/* Enable interrupts */
 
-#if __DV_CHECK_UNIMPLEMENTED
-#error "Not implemented: ensure SWI operand is in range"
-#endif
+	mov		$__dv_unknowncall,%eax			/* Preload unknown syscall handler */
+	cmpl	$(__DV_N_SYSCALLS-1),%esi		/* Check range of syscall index */
+	ja		.range							/* Jump if out -of-range */
 
-	ldr		r7,=__dv_syscall_table
-	ldr		r7,[r7,+r6,lsl #2]		/* Load system call address from table */
-	mov		r14,r15					/* Set return address (address of this instruction + 8) */
-	bx		r7						/* Call selected system call */
+	mov		__dv_syscall_table(,%esi,4),%eax	/* Load syscall func from table at index */
 
-#if 0
-	mrs		r7,CPSR					/* Disable IRQ, leave FIQ as it was before the call. */
-	orr		r7,#__DV_PSR_IRQ
-	msr		CPSR_c,r7
-#endif
+.range:
+	call	*%eax							/* Call the function */
 
-	stmdb	r13!,{r0-r1}			/* Push return value(s) onto stack */
+	mov		%eax,$__DV_SYSCALL_RETVAL(%esp)	/* Save the return value */
 
-	ldr		r7,=__dv_schedule		/* Find out what should run */
-	mov		r14,r15
-	bx		r7
+	sei										/* Disable interrupts */
 
-	ldr		r7,=__dv_currproc
-	ldr		r3,[r7]					/* r6 = __dv_currproc */
-	cmp		r0,r3
-	beq		__dv_syscall_return		/* Branch if no change in running process */
+	call	__dv_schedule					/* Find out what should run */
 
-	ldmia	r13!,{r0-r1,r4-r7,r14}	/* Restore saved registers */
-	cmp		r3,#0					/* Check for dead process */
+	cmpl	%eax,__dv_currproc
+	jeq		__dv_syscall_return				/* Jump if no change in running process */
+
+	cmpl	$0,__dv_currproc				/* Check for dead process */
 	beq		__dv_syscall_dispatch
 
 	add		r3,r3,#__DV_REGS		/* r3 = &__dv_current_proc->registers */

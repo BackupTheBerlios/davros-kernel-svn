@@ -43,3 +43,28 @@ int test_func(int nargs, int *args)
 
 	return 0;
 }
+
+#include <davros/syscall.h>
+#include <davros/init.h>
+
+typedef unsigned (*foo_t)(void);
+
+unsigned scdisp(unsigned idx)
+{
+	foo_t func = (foo_t)__dv_unknowncall;
+	unsigned retval;
+	__dv_uint8_t old_in_kernel;
+
+	old_in_kernel = __dv_in_kernel;
+	__dv_in_kernel = 1;
+
+	if ( idx < __DV_N_SYSCALLS )
+	{
+		func = (foo_t)__dv_syscall_table[idx];
+	}
+
+	retval = (*func)();
+
+	__dv_in_kernel = old_in_kernel;
+	return retval;
+}
